@@ -4,17 +4,23 @@ class Map():
 	#Within the map, 0 signifies free space, 1 signifies the player, 2 signifies an obsticle, 3 signifies the shop and anything greater refers to a type of enemy	
 
 	#Ensures the player is correct represented
-	def updatePlayer(self):
-		self.map[self.playerLocation[0]][self.playerLocation[1]] = 0
-		self.map[self.player.x][self.player.y] = 1
-		self.playerLocation = (self.player.x, self.player.y)
+	def updatePlayer(self, dx = 0, dy = 0):
+		self.playerLocation[0] += dx
+		self.playerLocation[1] += dy
+		self.map[self.player.x][self.player.y] = 0
+		self.map[self.playerLocation[0]][self.playerLocation[1]] = 1
+		self.player.x = self.playerLocation[0]
+		self.player.y = self.playerLocation[1]
 	
 	#Adds all living enemies to the map
-	def updateEnemies(self):
-		for i in self.removeList:
-			self.map[i[0]][i[1]] = 0
-		for i in self.enemyList:
-			self.map[i[1][0]][i[1][1]] = i[0]
+	def updateEnemies(self, setting = 1): #1 iterates both lists, 2 iterates only the enemyList, 0 only the removeList
+		if setting > 0:
+			for i in self.enemyList:
+				self.map[i[1][0]][i[1][1]] = i[0]
+			setting -= 1
+		if setting <= 0:
+			for i in self.removeList:
+				self.map[i[0]][i[1]] = 0
 
 	#Declares one or all enemies
 	def createEnemy(self, ref = 'all', x = 0, y = 0):
