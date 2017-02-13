@@ -5,17 +5,16 @@ class Map():
 
 	#Ensures the player is correct represented
 	def updatePlayer(self):
-		pass
-		#self.map[self.playerLocation[0]][self.playerLocation[1]] = 0
-		#self.map[player.x][player.y] = 1
-		#self.playerLocation = (player.x, player.y)
+		self.map[self.playerLocation[0]][self.playerLocation[1]] = 0
+		self.map[self.player.x][self.player.y] = 1
+		self.playerLocation = (self.player.x, self.player.y)
 	
 	#Adds all living enemies to the map
 	def updateEnemies(self):
 		for i in self.removeList:
 			self.map[i[0]][i[1]] = 0
 		for i in self.enemyList:
-			self.map[i[1]][i[2]] = i[0]
+			self.map[i[1][0]][i[1][1]] = i[0]
 
 	#Declares one or all enemies
 	def createEnemy(self, ref = 'all', x = 0, y = 0):
@@ -35,7 +34,7 @@ class Map():
 		self.enemyList = enemyList
 		self.removeList = []
 		self.playerLocation = playerLocation
-		#player = Player(playerLocation[0],playerLocation[1])
+		self.player = Player(*playerLocation)
 		self.updatePlayer()
 		self.updateEnemies()
 		self.createEnemy()
