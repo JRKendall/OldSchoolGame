@@ -29,11 +29,6 @@ class Player(Entity):
         self.x = x
         self.y = y
 
-    def move(self, map, dx, dy):
-        self.map.playerLocation[0] += dx
-        self.map.playerLocation[1] += dy
-        self.map.updatePlayer()
-
     def attack(self, map, dx, dy):
         #Make tuple of enemy's location based on dx,dy,player.x and player.y
         el = (self.x+dx, self.y+dy)
@@ -67,7 +62,7 @@ class Enemy(Entity):
         for i in range(len(map.enemyList)):
                 map.enemyList[i][2].ref = i
                 #Above is a bad solution, should be replaced but may need fundamental change
-        map.updateEnemies()
+        map.updateEnemies(0)
         self.drop_gold(self.golddropped)
 
     def drop_gold(self, golddropped):
