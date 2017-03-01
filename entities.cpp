@@ -11,15 +11,33 @@ int main()
 	 return 0;
 	}
 
-class Enemy(Entity):
+class Entity():
+{
+	public:
+	int self.HP = HP;
+        int self.damage = damage;
+        int self.defence = defence;
+        int self.x = x;
+        int self.y = y;
+
+int setlocation(self ,x ,y)
 	{
+	 int self.location = x;
+	 int self.location = y;
+	}
+}
+
+
+
+class Enemy(Entity):
+{
 	 public:
 	 int self.HP = HP;
  	 int self.attack = attack;
 	 int self.defence = defence;
 	 int self.golddropped = golddropped;
 	 int self.ref = ref;
-	 }
+	 
 
 int die(self, map)
 	{
@@ -46,3 +64,4 @@ int attack(self)
 	 player.HP -= self.damage - player.defence;
 	return 0;
 	}
+}
