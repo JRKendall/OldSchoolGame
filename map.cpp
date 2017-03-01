@@ -1,34 +1,58 @@
 #include <vector>
+#include <list>
+#include <iostream>
 #include "entities.cpp"
+
 using namespace std;
 
-int main(){
-	return 0;
-}
 
-class map{	
+class Map{	
 
-	int updateEnemies(self, setting = 1){
-		if(setting > 0)
-			for(int i : self.enemyList){
-				int self.map[i[1][0]][i[1][1]] = i[0]
-			}
-			setting = setting - 1
-		if(setting <= 0)
-			for(int i : self.removeList){
-				int self.map[i[0]][i[1]] = 0
-			}
-	}
+public:
+
+	vector<vector<int>> map;
+	vector<vector<int>> removeList;
+	list<int> playerLocation[2];
+	vector<vector<int>> enemyLocList;
+	vector<int> enemyTypeList;
+	int width;
+	int height;
 	
-	public:
-		int width;
-		int height;
-		vector<list> removeList;
-		list<int> playerLocation;
-		Player player
-		player.x = playerLocation[0]
-		player.y = playerLocation[1]
-		self.updatePlayer()
-		self.updateEnemies()
-		self.createEnemy()
+	Map(int width, int height, vector<vector<int>> callingList) {
+		this->width = width;
+		for(int i=0; i < height; i++){
+			vector<int> layer;
+			for(int j=0; j < width; j++){
+				layer.push_back(0);
+			};
+			this->map.push_back(layer);
+		};
+		for(auto i : callingList){
+			this->enemyTypeList.push_back(i[0]);
+			this->enemyLocList.push_back({i[1],i[2]});
+		};
+		//vector<Enemy> enemyList = {};
+		//this->updatePlayer();
+		//this->updateEnemies();
+		//this->createEnemy();
+		//Player player(playerLocation[0], playerLocation[1]);
+	};
+	
+	int updateEnemies(int setting = 1){
+		if(setting > 0)
+			for(int i = 0; i < this->enemyLocList.size(); i++){
+				vector<int> j = this->enemyLocList[i];
+				this->map[j[0]][j[1]] = this->enemyTypeList[i];
+			};
+			setting = setting - 1;
+		if(setting <= 0)
+			for(auto i : this->removeList){
+				this->map[i[0]][i[1]] = 0;
+			};
+	};
+};
+
+int main(){
+	//Map map(10,10,{{1,2,3},{4,4,5}});
+	return 0;
 }
