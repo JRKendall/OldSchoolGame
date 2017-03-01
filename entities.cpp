@@ -4,6 +4,8 @@
 #include <iostream>
 #include <queue>
 #include <functional>
+#include "map.cpp"
+
 using namespace std;
 
 int main()
@@ -14,79 +16,89 @@ int main()
 class Entity():
 {
 	public:
-		int self.HP;
-        	int self.attack;
-        	int self.defence;
-        	int self.x;
-        	int self.y;
+		int HP;
+        	int attack;
+        	int defence;
+        	int x;
+        	int y;
 
-void setlocation(self ,x ,y)
+	Entity(int HP, int attack, int defence, int x, int y){
+		this.HP = HP;
+		this.attack = attack;
+		this.defence = defence;
+		this.x = x;
+		this.y = y;
+
+void setlocation(int x ,int y)
 	{
-	 int self.location = x;
-	 int self.location = y;
+	 this.x = x;
+	 this.x = y;
 	}
 }
 
-class Player(Entity):
+class Player(Entity)
 {
 	public:
-		int self.x;
-		int self.y;
-int attack(self, map, dx, dy)
-	{
-	 int el = (self.x+dx, self.y+dy);
-	 int mapnum = map.map[el[0]][el[1]];
-	 
-	if (mapnum < 3)
+		int x;
+		int y;
+
+	int attack(Map map, int dx, int dy)
 		{
-		 return 0;
-		}
-	else if (mapnum == 3)
-		{
-		 return 0; //shop.something method goes here - interacting with shop
-		}
-	else
-		{
-		 // Need help with converting the below for loop into c++
-			for i in map.enemyList:
-                if i[1] == el:
-                    i[2].HP -= (self.damage - i[2].defence)
-        #else Index map.enemyList if map.enemyList[i][1] == tuple then health is map.enemyList[i][2].HP
-        #Modify it by self.attack - map.enemyList[i][2].defence
-		}
+		 list<int> el[2] = [this.x+dx, this.y+dy];
+		 int mapnum = map.map[el[0]][el[1]];
+		 
+		if (mapnum < 3)
+			{
+			 return 0;
+			}
+		else if (mapnum == 3)
+			{
+			 return 0; //shop.something method goes here - interacting with shop
+			}
+		//else
+		//	{
+		//	 // Need help with converting the below for loop into c++
+		//		for(auto i : map.enemyList){
+		//        		if(i[1] == el){
+		//        			i[2].HP -= (this.damage - i[2].defence)
+		//			}
+		//		}
+		//else Index map.enemyList if map.enemyList[i][1] == tuple then health is map.enemyList[i][2].HP
+		//Modify it by self.attack - map.enemyList[i][2].defence
+		//	}
 }
 
 class Enemy(Entity):
 {
 	 public:
-	 	int self.HP;
- 	 	int self.attack;
-	 	int self.defence;
-	 	int self.golddropped;
-	 	int self.ref;
+	 	int HP;
+ 	 	int attack;
+	 	int defence;
+	 	int golddropped;
+	 	int ref;
 	 
 
-void die(self, map)
-	{
-	 map.removelist.emplace_back(map.enemyList.pop(self.ref))[1]; //  Ads the second element of the nested enemy vector, and appends it to map.removeList.
-	 for ( int i; i < map.enemyList.size; map.enemyList[i][2].ref = i ) // Bad solution. May be replaced later
-		{
-		 
- 		}
-	map.updateEnemies(0)
-	self.drop_gold(self.golddropped) // Runs the unction that causes enemies to drop gold
-
-	}
+//void die(map)
+//	{
+//	 map.removelist.emplace_back(map.enemyList.pop(self.ref))[1]; //  Ads the second element of the nested enemy vector, and appends it to map.removeList.
+//	 for ( int i; i < map.enemyList.size; map.enemyList[i][2].ref = i ) // Bad solution. May be replaced later
+//		{
+//		 
+// 		}
+//	map.updateEnemies(0)
+//	self.drop_gold(self.golddropped) // Runs the unction that causes enemies to drop gold
+//
+//	}
 //enemy.drop_gold
-int drop_gold(self, golddropped)
+int drop_gold(golddropped)
 	{
 	//when enemy dies a amount of gold will be dropped depending on the type of enemy
 	return 0;
 	}
 
 //enemy.attack
-void attack(self)
+void attack()
 	{
-	 player.HP -= self.damage - player.defence;
+	 player.HP -= this.damage - player.defence;
 	}
 }
