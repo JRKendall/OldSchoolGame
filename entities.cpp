@@ -54,6 +54,7 @@ int attack(self, map, dx, dy)
         #else Index map.enemyList if map.enemyList[i][1] == tuple then health is map.enemyList[i][2].HP
         #Modify it by self.attack - map.enemyList[i][2].defence
 		}
+}
 
 class Enemy(Entity):
 {
