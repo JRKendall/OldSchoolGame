@@ -14,11 +14,11 @@ int main()
 class Entity():
 {
 	public:
-	int self.HP = HP;
-        int self.damage = damage;
-        int self.defence = defence;
-        int self.x = x;
-        int self.y = y;
+		int self.HP;
+        	int self.attack;
+        	int self.defence;
+        	int self.x;
+        	int self.y;
 
 int setlocation(self ,x ,y)
 	{
@@ -32,11 +32,11 @@ int setlocation(self ,x ,y)
 class Enemy(Entity):
 {
 	 public:
-	 int self.HP = HP;
- 	 int self.attack = attack;
-	 int self.defence = defence;
-	 int self.golddropped = golddropped;
-	 int self.ref = ref;
+	 	int self.HP;
+ 	 	int self.attack;
+	 	int self.defence;
+	 	int self.golddropped;
+	 	int self.ref;
 	 
 
 int die(self, map)
