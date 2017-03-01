@@ -11,6 +11,16 @@ int main()
 	 return 0;
 	}
 
+class Enemy(Entity):
+	{
+	 public:
+	 int self.HP = HP;
+ 	 int self.attack = attack;
+	 int self.defence = defence;
+	 int self.golddropped = golddropped;
+	 int self.ref = ref;
+	 }
+
 int die(self, map)
 	{
 	 map.removelist.emplace_back(map.enemyList.pop(self.ref))[1]; //  Ads the second element of the nested enemy vector, and appends it to map.removeList.
@@ -22,4 +32,17 @@ int die(self, map)
 	self.drop_gold(self.golddropped) // Runs the unction that causes enemies to drop gold
 
 	 return 0;
+	}
+//enemy.drop_gold
+int drop_gold(self, golddropped)
+	{
+	//when enemy dies a amount of gold will be dropped depending on the type of enemy
+	return 0;
+	}
+
+//enemy.attack
+int attack(self)
+	{
+	 player.HP -= self.damage - player.defence;
+	return 0;
 	}
