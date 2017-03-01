@@ -20,14 +20,40 @@ class Entity():
         	int self.x;
         	int self.y;
 
-int setlocation(self ,x ,y)
+void setlocation(self ,x ,y)
 	{
 	 int self.location = x;
 	 int self.location = y;
 	}
 }
 
-
+class Player(Entity):
+{
+	public:
+		int self.x;
+		int self.y;
+int attack(self, map, dx, dy)
+	{
+	 int el = (self.x+dx, self.y+dy);
+	 int mapnum = map.map[el[0]][el[1]];
+	 
+	if (mapnum < 3)
+		{
+		 return 0;
+		}
+	else if (mapnum == 3)
+		{
+		 return 0; //shop.something method goes here - interacting with shop
+		}
+	else
+		{
+		 // Need help with converting the below for loop into c++
+			for i in map.enemyList:
+                if i[1] == el:
+                    i[2].HP -= (self.damage - i[2].defence)
+        #else Index map.enemyList if map.enemyList[i][1] == tuple then health is map.enemyList[i][2].HP
+        #Modify it by self.attack - map.enemyList[i][2].defence
+		}
 
 class Enemy(Entity):
 {
@@ -39,7 +65,7 @@ class Enemy(Entity):
 	 	int self.ref;
 	 
 
-int die(self, map)
+void die(self, map)
 	{
 	 map.removelist.emplace_back(map.enemyList.pop(self.ref))[1]; //  Ads the second element of the nested enemy vector, and appends it to map.removeList.
 	 for ( int i; i < map.enemyList.size; map.enemyList[i][2].ref = i ) // Bad solution. May be replaced later
@@ -49,7 +75,6 @@ int die(self, map)
 	map.updateEnemies(0)
 	self.drop_gold(self.golddropped) // Runs the unction that causes enemies to drop gold
 
-	 return 0;
 	}
 //enemy.drop_gold
 int drop_gold(self, golddropped)
@@ -59,9 +84,8 @@ int drop_gold(self, golddropped)
 	}
 
 //enemy.attack
-int attack(self)
+void attack(self)
 	{
 	 player.HP -= self.damage - player.defence;
-	return 0;
 	}
 }
