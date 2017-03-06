@@ -7,7 +7,7 @@
 #include <queue>
 #include <functional>
 #include <algorithm>
-#include <typeinfo>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -29,10 +29,12 @@ map<char, int> setStats(int ref){
 	return stats;
 }
 
-vector<vector<int>> updatePlayer(int dx, int dy, vector<vector<int>> world = world){
+vector<vector<int>> updatePlayer(int dx, int dy, vector<vector<int>> world = world, bool initial = false){
 	world[playerLocation[0]][playerLocation[1]] = 0;
-	playerLocation[0] += dx;
-	playerLocation[1] += dy;
+	if(world[playerLocation[0]+dx][playerLocation[1]+dy] == 0 || initial){
+		playerLocation[0] += dx;
+		playerLocation[1] += dy;
+	}
 	world[playerLocation[0]][playerLocation[1]] = 1;
 	return world;
 }
@@ -72,34 +74,48 @@ vector<vector<int>> createWorld(int width, int height, vector<vector<int>> calli
 		world.push_back(layer);
 	};
 	buildLists(callingList);
-	return updatePlayer(0, 0, updateEnemies(1, world));
+	return updatePlayer(0, 0, updateEnemies(1, world), true);
 }
 
-string printWorld(){;
-	string line = "|"+string(world[0].size()*2-1, '-')+"|\n|";
+const char* printWorld(){;
+	string line = " "+string(world[0].size()*2-1, ' ')+" \n ";
 	string out;
 	for(auto i : world){
 		out += line;
 		for(auto j : i){
-			out += to_string(j)+"|";
+			out += to_string(j)+" ";
 		}
 		out += "\n";
 	}
-	return out;
+	return out.c_str();
 }
 
-int playerAttack(int dx, int dy){
+void enemyDie(int ref){
+	removeList.emplace_back(enemyLocList[ref]);
+	enemyTypeList.erase(enemyTypeList.begin()+ref);
+	enemyStatList.erase(enemyStatList.begin()+ref);
+	enemyLocList.erase(enemyLocList.begin()+ref);
+	world = updateEnemies(0, world);
+	//drop_gold(self.golddropped) // Runs the unction that causes enemies to drop gold
+
+}
+
+void playerAttack(int dx, int dy){
 	vector<int> el = {playerLocation[0]+dx, playerLocation[1]+dy};
 	int mapnum = world[el[0]][el[1]];
 	if(mapnum < 3){
-		return 0;
+		return;
 	}
 	else if(mapnum == 3){
-		return 0; //shop.something method goes here - interacting with shop
+		return; //shop.something method goes here - interacting with shop
 	}
 	else{
 		int ei = find(enemyLocList.begin(), enemyLocList.end(), el) - enemyLocList.begin();
 		enemyStatList[ei]['H'] -= playerStatList['A'] - enemyStatList[ei]['D'];
+		//cout << "This";
+		if(enemyStatList[ei]['H'] <= 0){
+			enemyDie(ei);
+		}
 	}
 }
 
@@ -107,17 +123,47 @@ void enemyAttack(int ref){
 	playerStatList['H'] -= enemyStatList[ref]['A'] - playerStatList['D'];
 };
 
-void enemyDie(int ref){
-	removeList.emplace_back(enemyLocList[ref]);
-	enemyTypeList.erase(enemyTypeList.begin()+ref);
-	enemyStatList.erase(enemyStatList.begin()+ref);
-	enemyLocList.erase(enemyLocList.begin()+ref);
-	updateEnemies(0);
-	//drop_gold(self.golddropped) // Runs the unction that causes enemies to drop gold
-
+void gameLoop(){
+	int key;
+	int keyIndex;
+	vector<int> args;
+	map<int, vector<int>> movingKeys;
+	movingKeys[97] = {0,-1};
+	movingKeys[100] = {0,1};
+	movingKeys[115] = {1,0};
+	movingKeys[119] = {-1,0};
+	map<int, vector<int>> attackKeys;
+	attackKeys[49] = {0,-1}; //Left
+	attackKeys[50] = {1,0}; //Down
+	attackKeys[51] = {0,1}; //Right
+	attackKeys[53] = {-1,0}; //Up
+	initscr();
+	addstr(printWorld());
+	refresh();
+	int i = 0;
+	while(key != 96){
+		key = getch();
+		if(movingKeys.find(key) != movingKeys.end()){
+			args = movingKeys[key];
+			world = updatePlayer(args[0],args[1],world);
+		}
+		else if(attackKeys.find(key) != attackKeys.end()){
+			args = attackKeys[key];
+			playerAttack(args[0],args[1]);
+			getch();
+		}
+		for(int i = 0 float j = 0; i < 2; i++ j+=0.5){
+			
+		clear();
+		addstr(printWorld());
+		refresh();
+	}
+	endwin();
 }
 
 int main(){
 	world = createWorld(10, 10, {{4,4,5},{6,3,5}});
+	gameLoop();
+	
 	return 0;
 }
