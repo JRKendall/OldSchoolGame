@@ -1,0 +1,14 @@
+Type        HP          attack      defence     golddropped  ref       
+
+----------  ----------  ----------  ----------  -----------  ----------
+
+Spider      20          3           5           10           0         
+
+Goblin      30          5           7           20           1         
+
+Skeleton    45          10          6           40           2         
+
+Zombie      60          15          9           60           3         
+
+Dragon      150         30          20          200          4         
+
