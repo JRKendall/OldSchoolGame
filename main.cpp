@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES
+
+#include <math.h>
 #include <array>
 #include <vector>
 #include <list>
@@ -30,37 +33,41 @@ map<char, int> setStats(int ref){
 }
 
 vector<vector<int>> updatePlayer(int dx, int dy, vector<vector<int>> world = world, bool initial = false){
-	world[playerLocation[0]][playerLocation[1]] = 0;
-	if(world[playerLocation[0]+dx][playerLocation[1]+dy] == 0 || initial){
-		playerLocation[0] += dx;
-		playerLocation[1] += dy;
+	if(playerLocation.at(0)+dx == world.size() || playerLocation.at(0)+dx < 0 ||
+	playerLocation.at(1)+dy == world[0].size() || playerLocation.at(1)+dy < 0){
+		return world;
 	}
-	world[playerLocation[0]][playerLocation[1]] = 1;
+	world.at(playerLocation.at(0)).at(playerLocation.at(1)) = -1;
+	if(world.at(playerLocation.at(0)+dx).at(playerLocation.at(1)+dy) == -1 || initial){
+		playerLocation.at(0) += dx;
+		playerLocation.at(1) += dy;
+	}
+	world.at(playerLocation.at(0)).at(playerLocation.at(1)) = -2;
 	return world;
 }
 
 vector<vector<int>> updateEnemies(int setting, vector<vector<int>> world = world){
 	if(setting > 0){
 		for(int i = 0; i < enemyLocList.size(); i++){
-			world[enemyLocList[i][0]][enemyLocList[i][1]] = enemyTypeList[i];
+			world.at(enemyLocList.at(i).at(0)).at(enemyLocList.at(i).at(1)) = i;
 		};
 		setting -= 1;
 	}
 	if(setting <= 0){
 		for(auto i : removeList){
-			world[i[0]][i[1]] = 0;
+			world.at(i.at(0)).at(i.at(1)) = -1;
 		};
 	}
 	return world;
 }
 
 void buildLists(vector<vector<int>> callingList){
-	playerStatList = setStats(1);
+	playerStatList = setStats(0);
 	for(auto i : callingList){
-		enemyTypeList.emplace_back(i[0]);
-		vector<int> coords = {i[1],i[2]};
+		enemyTypeList.emplace_back(i.at(0));
+		vector<int> coords = {i.at(1),i.at(2)};
 		enemyLocList.emplace_back(coords);
-		enemyStatList.emplace_back(setStats(i[0]));
+		enemyStatList.emplace_back(setStats(i.at(0)));
 	};
 }
 
@@ -69,7 +76,7 @@ vector<vector<int>> createWorld(int width, int height, vector<vector<int>> calli
 	for(int i=0; i < height; i++){
 		vector<int> layer;
 		for(int j=0; j < width; j++){
-			layer.push_back(0);
+			layer.push_back(-1);
 		};
 		world.push_back(layer);
 	};
@@ -77,21 +84,38 @@ vector<vector<int>> createWorld(int width, int height, vector<vector<int>> calli
 	return updatePlayer(0, 0, updateEnemies(1, world), true);
 }
 
-const char* printWorld(){;
-	string line = " "+string(world[0].size()*2-1, ' ')+" \n ";
+void printWorld(){;
+	map<int, string> characters;
+	characters[-4] = " ";
+	characters[-3] = "S";
+	characters[-2] = "^";
+	characters[-1] = ".";
+	string line = " "+string(world.at(0).size()*2-1, ' ')+" \n ";
 	string out;
 	for(auto i : world){
-		out += line;
+		attron(COLOR_PAIR(1));
+		addstr(line.c_str());
+		attroff(COLOR_PAIR(1));
 		for(auto j : i){
-			out += to_string(j)+" ";
+			string jstring;
+			if(j >= 0){
+				attron(COLOR_PAIR(5));
+				jstring = to_string(enemyTypeList[j])+" ";
+			}
+			else{
+				attron(COLOR_PAIR(-j));
+				jstring = characters[j]+" ";
+			}
+			addstr(jstring.c_str());
+			attroff(COLOR_PAIR(-j));
 		}
-		out += "\n";
+		addstr("\n");
 	}
-	return out.c_str();
+	//return out.c_str();
 }
 
-void enemyDie(int ref){
-	removeList.emplace_back(enemyLocList[ref]);
+void enemyDie(int ref, vector<vector<int>> enemyLocList, vector<int> enemyTypeList, vector<map<char, int>> enemyStatList){
+	removeList.emplace_back(enemyLocList.at(ref));
 	enemyTypeList.erase(enemyTypeList.begin()+ref);
 	enemyStatList.erase(enemyStatList.begin()+ref);
 	enemyLocList.erase(enemyLocList.begin()+ref);
@@ -101,27 +125,48 @@ void enemyDie(int ref){
 }
 
 void playerAttack(int dx, int dy){
-	vector<int> el = {playerLocation[0]+dx, playerLocation[1]+dy};
-	int mapnum = world[el[0]][el[1]];
-	if(mapnum < 3){
+	int mapnum = world.at(playerLocation.at(0)+dx).at(playerLocation.at(1)+dy);
+	if(mapnum < 0){
 		return;
 	}
-	else if(mapnum == 3){
+	else if(mapnum == -3){
 		return; //shop.something method goes here - interacting with shop
 	}
 	else{
-		int ei = find(enemyLocList.begin(), enemyLocList.end(), el) - enemyLocList.begin();
-		enemyStatList[ei]['H'] -= playerStatList['A'] - enemyStatList[ei]['D'];
-		//cout << "This";
-		if(enemyStatList[ei]['H'] <= 0){
-			enemyDie(ei);
+		enemyStatList.at(mapnum)['H'] -= playerStatList['A'] - enemyStatList.at(mapnum)['D'];
+		if(enemyStatList.at(mapnum)['H'] <= 0){
+			enemyDie(mapnum, enemyLocList, enemyTypeList, enemyStatList);
 		}
 	}
 }
 
-void enemyAttack(int ref){
-	playerStatList['H'] -= enemyStatList[ref]['A'] - playerStatList['D'];
+bool enemyAttack(){
+	int j;
+	for(int i = 0; i < 4; i+=1){
+		j = i*M_PI/2;
+		if(playerLocation[0]+sin(j) == world.size() || playerLocation[0]+sin(j) < 0 ||
+		playerLocation[1]+(cos(j)*-1) == world[0].size() || playerLocation[1]+(cos(j)*-1) < 0){
+			break;
+		}
+		j = world[playerLocation[0]+sin(j)][playerLocation[1]+(cos(j)*-1)];
+		if(j >= 0){
+			playerStatList['H'] -= enemyStatList.at(j)['A'] - playerStatList['D'];;
+		}
+	}
+	if(playerStatList['H'] <= 0){
+		return true;
+	}
+	return false;
 };
+
+vector<vector<int>> addObs(int t, int b, int l, int r, vector<vector<int>> world){
+	for(int i = t; i < b; i++){
+		for(int j = l; j < r; j++){
+			world[i][j] = -4;
+		}
+	}
+	return world;
+}
 
 void gameLoop(){
 	int key;
@@ -138,32 +183,45 @@ void gameLoop(){
 	attackKeys[51] = {0,1}; //Right
 	attackKeys[53] = {-1,0}; //Up
 	initscr();
-	addstr(printWorld());
+	start_color();
+	init_color(COLOR_YELLOW, 953, 612, 71);
+	init_color(COLOR_MAGENTA, 827, 329, 0);
+	init_pair(1, COLOR_GREEN, COLOR_YELLOW);
+	init_pair(2, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(3, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(4, COLOR_BLACK, COLOR_MAGENTA);
+	init_pair(5, COLOR_RED, COLOR_YELLOW);
+	printWorld();
 	refresh();
-	int i = 0;
-	while(key != 96){
+	for(int i = 0; i > -1; i++){
 		key = getch();
 		if(movingKeys.find(key) != movingKeys.end()){
 			args = movingKeys[key];
-			world = updatePlayer(args[0],args[1],world);
+			world = updatePlayer(args.at(0),args.at(1),world);
 		}
 		else if(attackKeys.find(key) != attackKeys.end()){
 			args = attackKeys[key];
-			playerAttack(args[0],args[1]);
-			getch();
+			playerAttack(args.at(0),args.at(1));
 		}
-		for(int i = 0 float j = 0; i < 2; i++ j+=0.5){
-			
+		if(enemyAttack() || key == 96){
+			break;
+		}
 		clear();
-		addstr(printWorld());
+		printWorld();
+		addstr(to_string(i).c_str());
 		refresh();
 	}
+	clear();
+	addstr("Game Over!");
+	refresh();
+	getch();
 	endwin();
 }
 
 int main(){
-	world = createWorld(10, 10, {{4,4,5},{6,3,5}});
+	world = createWorld(20, 20, {{4,4,5},{6,3,5}});
+	world = addObs(14,20,15,20,world);
 	gameLoop();
-	
+
 	return 0;
 }
