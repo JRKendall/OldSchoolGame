@@ -1,0 +1,42 @@
+
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+
+
+
+int main()
+//efile being Enemy file
+{
+    
+    string id;
+    int xPlace;
+    int yPlace;
+
+    
+    ifstream eFile;
+    eFile.open("EnemyPlaces.txt");
+    
+    
+    //Check for an error
+    
+    if(eFile.fail()) {
+        cerr << "Error, Cannot open file" <<endl;
+        exit(1);
+        
+    }
+    
+    
+    //This while loop reads a file until it reaches the end of that file
+    while(eFile >> id >> xPlace >> yPlace) {
+        cout << id << " X - Coordinate:" << xPlace << " Y - Coordinate:" << yPlace << endl;
+        
+    }
+    
+    
+    
+    return 0;
+}
+
