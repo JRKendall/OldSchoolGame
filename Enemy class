@@ -1,0 +1,52 @@
+#include "Enemy.hpp"
+
+class Enemies{
+public:
+    int xCord, yCord, mHealth, damage, attack;
+
+    void die() {}
+    void eAttack(){}
+    
+    
+    int getxCord() {
+        return xCord;
+    }
+    
+    void setxCord(int xCord){
+        this->xCord = xCord;
+    }
+    
+    int getyCord() {
+        return yCord;
+    }
+    
+    void setyCord(int yCord){
+        this->yCord = yCord;
+    }
+    
+    int getmHealth() {
+        return mHealth;
+    }
+    
+    void setmHealth(int mHealth){
+        this->mHealth = mHealth;
+    }
+    
+    
+    int getdamage() {
+        return damage;
+    }
+    
+    void setdamage(int damage){
+        this->damage = damage;
+    }
+    
+    int getattack() {
+        return attack;
+    }
+    void setattack(int attack){
+        this->attack = attack;
+    }
+    
+    
+};
