@@ -23,7 +23,7 @@ map<char, int> playerStatList;
 vector<vector<int>> world;
 
 map<char, int> setStats(int ref){
-	//Lookup stats in stat lists, for now defaults used
+	//Gets the stats of the player from the database to be used in the game
 	map<char, int> stats;
 	stats['H'] = 100; //HP
 	stats['A'] = 30; //Attack
@@ -61,7 +61,7 @@ vector<vector<int>> updateEnemies(int setting, vector<vector<int>> world = world
 	return world;
 }
 
-void buildLists(vector<vector<int>> callingList){
+void buildLists(vector<vector<int>> callingList){ //finds the list which contains the stats for the enemies found inthe relational database
 	playerStatList = setStats(0);
 	for(auto i : callingList){
 		enemyTypeList.emplace_back(i.at(0));
@@ -71,7 +71,7 @@ void buildLists(vector<vector<int>> callingList){
 	};
 }
 
-vector<vector<int>> createWorld(int width, int height, vector<vector<int>> callingList) {
+vector<vector<int>> createWorld(int width, int height, vector<vector<int>> callingList) { //creates the map for the game
 	vector<vector<int>> world;
 	for(int i=0; i < height; i++){
 		vector<int> layer;
@@ -84,7 +84,7 @@ vector<vector<int>> createWorld(int width, int height, vector<vector<int>> calli
 	return updatePlayer(0, 0, updateEnemies(1, world), true);
 }
 
-void printWorld(){;
+void printWorld(){; //shows the created map and assigns all of the entities to different characthers.
 	map<int, string> characters;
 	characters[-4] = " ";
 	characters[-3] = "S";
@@ -114,7 +114,7 @@ void printWorld(){;
 	//return out.c_str();
 }
 
-void enemyDie(int ref, vector<vector<int>> enemyLocList, vector<int> enemyTypeList, vector<map<char, int>> enemyStatList){
+void enemyDie(int ref, vector<vector<int>> enemyLocList, vector<int> enemyTypeList, vector<map<char, int>> enemyStatList){ //The function which handles the enemy dying. Reponsible for removing enemies from the database and the game
 	removeList.emplace_back(enemyLocList.at(ref));
 	enemyTypeList.erase(enemyTypeList.begin()+ref);
 	enemyStatList.erase(enemyStatList.begin()+ref);
@@ -124,7 +124,7 @@ void enemyDie(int ref, vector<vector<int>> enemyLocList, vector<int> enemyTypeLi
 
 }
 
-void playerAttack(int dx, int dy){
+void playerAttack(int dx, int dy){ //Handles the player attacking. If used on an enemy depletes their health. If used on a shop, acesses the shop screen
 	int mapnum = world.at(playerLocation.at(0)+dx).at(playerLocation.at(1)+dy);
 	if(mapnum < 0){
 		return;
@@ -140,7 +140,7 @@ void playerAttack(int dx, int dy){
 	}
 }
 
-bool enemyAttack(){
+bool enemyAttack(){ //run when an enemy attacks the player. Takes points from the player's health depending on how much attack the enemy has and the player's defence
 	int j;
 	for(int i = 0; i < 4; i+=1){
 		j = i*M_PI/2;
@@ -168,7 +168,7 @@ vector<vector<int>> addObs(int t, int b, int l, int r, vector<vector<int>> world
 	return world;
 }
 
-void gameLoop(){
+void gameLoop(){ //Handles the running of the game and also assigns the player functions to different keys
 	int key;
 	int keyIndex;
 	vector<int> args;
