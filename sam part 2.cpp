@@ -37,8 +37,9 @@ int main()
 	{
 		system("cls"); //information about the design of the game can be found by preesing 2 and then enter
 		cout << "This game was created by a group of students at coventry university\nThe game is an rpg style game that took inspirtation from titles such as Zelda and Mario" << endl;
-		cout << "Samuel was responsible for the creation of the menu as well as the iniatal draft for the game." << endl;
+		cout << "Samuel was responsible for the creation of the menu as well as the initial draft for the game." << endl;
 		cout << " Ade created enemy places and classes" << endl;
+		cout << " Shayan helped implement the menu in the game" << endl;
 		cout << "Jordan was responsible for the map creation as well as movement in the game" << endl;
 		cout << "Josh oversaw the game in and contributed to various aspects" endl;
 		system("pause");
