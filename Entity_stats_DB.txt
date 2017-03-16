@@ -1,0 +1,12 @@
+Entity_ID   HP          Attack      Defence     Gold        Name        Char     ----------  ----------  ----------  ----------  ----------  ---------- ----------
+-1          100         30          20          0           Player      &         
+
+0           25          3           3           20          Spider      M         
+
+1           30          5           5           30          Goblin      G         
+
+2           45          6           4           50          Skeleton    @         
+
+3           55          5           10          65          Zombie      Z         
+
+4           125         10          10          100         Dragon      %         
