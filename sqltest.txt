@@ -11,7 +11,7 @@
 #include <functional>
 #include <algorithm>
 #include <ncurses.h>
-#include "libsqlite.hpp"
+#include "libsqlite3-0"
 
 using namespace std;
 
