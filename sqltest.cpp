@@ -24,11 +24,7 @@ map<char, int> playerStatList;
 map<vector<int>, int> goldList;
 vector<vector<int>> world;
 
-int opendb()//Opens the DB and creates any queries that are needed
-{
-	sqlite::sqlite db( "entitiesdb.db" ); //opening up relational database
-	
-}
+sqlite::sqlite db( "entitiesdb.db" ); //opening up relational database
 
 
 map<char, int> setStats(int ref){
