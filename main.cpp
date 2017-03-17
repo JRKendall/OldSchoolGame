@@ -216,7 +216,7 @@ vector<vector<int>> addObs(int t, int b, int l, int r, vector<vector<int>> world
 }
 
 void MainMenu() 
-   {cout << "\n" << endl;
+   {    cout << "\n" << endl;
 	cout << "                            (^_^)MAIN MENU(^_^)" << endl;
 	cout << "\n" << endl;
 	cout << "\n" << endl;
@@ -348,6 +348,6 @@ int main(int argc, char *argv[]){
 	}
 	//world = addObs(14,20,15,20,world);
 	gameLoop();
-
+        MainMenu();
 	return 0;
 }
