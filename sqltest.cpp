@@ -34,18 +34,24 @@ map<char, int> setStats(int ref){
 	sqlite::sqlite db( "entitiesdb.db" ); //opening up relational database
 	
 	stats['H'] = db.getstatement();
-	stats['H']->set_sql("SELECT HP FROM entitystats WHERE Entity_ID = "ref";");
+	stats['H']->set_sql("SELECT HP FROM entitystats WHERE ref = ?;");
+	stats['H']->bind(1,ref);
 	stats['H']->prepare();
 
 	stats['A'] = db.getstatement();
-	stats['A']->set_sql("SELECT Attack FROM entitystats WHERE Entity_ID = "ref";");
+	stats['A']->set_sql("SELECT Attack FROM entitystats WHERE ref = ?;");
+	stats['A']->bind(1,ref);
 	stats['A']->prepare();
 
 	stats['D'] = db.getstatement();
-	stats['D']->set_sql("SELECT Defence FROM entitystats WHERE Entity_ID = "ref";");
+	stats['D']->set_sql("SELECT Defence FROM entitystats WHERE ref = ?;");
+	stats['D']->bind(1,ref);
 	stats['D']->prepare();
 
-	stats['G'] = 20; //Gold
+	stats['G'] = db.getstatement();
+	stats['G']->set_sql("SELECT Gold FROM entitystats WHERE ref = ?;");
+	stats['G']->bind(1,ref);
+	stats['G']->prepare();
 	return stats;
 }
 
