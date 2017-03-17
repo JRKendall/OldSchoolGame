@@ -215,9 +215,9 @@ vector<vector<int>> addObs(int t, int b, int l, int r, vector<vector<int>> world
 	return world;
 }
 
-void MainMenu() 
-   {    cout << "\n" << endl;
-	cout << "                            (^_^)MAIN MENU(^_^)" << endl;
+void MainMenu(){
+	cout << "\n" << endl;
+	cout << "                            MAIN MENU" << endl;
 	cout << "\n" << endl;
 	cout << "\n" << endl;
 	cout << "                            Option 1- Start Game" << endl;
@@ -226,61 +226,32 @@ void MainMenu()
 	cout << "\n" << endl;
 	cout << "                            Option 3- Controls" << endl; // control scheme
 	cout << "\n" << endl;
-	cout << "                            Option 4- Quit" << endl; //exits the programme when selected
-	cout << "\n" << endl;
-	cout << "\n" << endl;
-	cout << "    press numbers 1 to 4 followed by enter depending on what option you want :)" << endl;
+	cout << "    press numbers 1 to 3 followed by enter depending on what option you want" << endl;
 	// Shows all the conditional statements that can be run
-	cin >> option;
+	int option;
+	while(true){
+		cin >> option;
+		if(option == 1){
+			break;
+		}
+		if(option == 2){
+			//information about the design of the game can be found by preesing 2 and then enter
+			cout << "This game was created by a group of students at Coventry university\nThe game is an rpg style game that took inspirtation from titles such as Zelda and Mario" << endl;
+			cout << "Samuel was responsible for the creation of the menu as well as the initial draft for the game." << endl;
+			cout << "Ade created enemy places and classes" << endl;
+			cout << "Jordan was responsible for the map creation as well as movement in the game" << endl;
+			cout << "Josh oversaw the game and contributed to various aspects" << endl;
 
-	if (option == 1)
-	{
-		return; // this links to the game and starts it.
-		cout << "The game will load up in a moment....." << endl;
-		system("pause");
-		return 0;
-
-
+		}
+		else if(option == 3){
+			cout << "The controls" << endl;
+			cout << "WASD for up, left, down and right respectively " << endl;
+			cout << "5,3,2,1 are used to attack" << endl;
+		}
+		else{
+			cout << "Incorrect Number, please try again"<<endl; //if the conditional statements are not met then this piece of code is executed
+		}
 	}
-	if (option == 2)
-	{
-		return; //information about the design of the game can be found by preesing 2 and then enter
-		cout << "This game was created by a group of students at coventry university\nThe game is an rpg style game that took inspirtation from titles such as Zelda and Mario" << endl;
-		cout << "Samuel was responsible for the creation of the menu as well as the initial draft for the game." << endl;
-		cout << " Ade created enemy places and classes" << endl;
-		cout << "Jordan was responsible for the map creation as well as movement in the game" << endl;
-		cout << "Josh oversaw the game and contributed to various aspects" << endl;
-		system("pause");
-		return 0;
-
-	}
-	if(option == 3)
-	{
-		system("cls");
-		cout << "The controls" << endl;
-		cout << "WASD for up, left, down and right respectively " << endl;
-		cout << "5,3,1 are used to attack" << endl;
-		system("pause"); // pauses the screen until another key is pressed in which case the programme closes
-		return 0;
-
-
-	}
-
-	if (option == 4) // closes the window if this conditional is met
-	{
-		return 0;
-	}
-	else
-	{
-		cout << "Incorrect Number, please try again"<<endl; //if the conditional statements are not met then this piece of code is executed
-		system("pause");
-		return 0;
-	}
-
-
-
-
-
 }
 
 
@@ -340,6 +311,7 @@ void gameLoop(){//Handles the running of the game and also assigns the player fu
 }
 
 int main(int argc, char *argv[]){
+	MainMenu();
 	if(argc >= 2 && stoi(argv[1]) > 5 && stoi(argv[2]) > 5){
 		world = createWorld(stoi(argv[1]), stoi(argv[2]), {{6,3,5}});
 	}
@@ -348,6 +320,5 @@ int main(int argc, char *argv[]){
 	}
 	//world = addObs(14,20,15,20,world);
 	gameLoop();
-        MainMenu();
 	return 0;
 }
