@@ -36,15 +36,15 @@ map<char, int> setStats(int ref){
 	map<char, int> stats;
 	
 	stats['H'] = db.getstatement();
-	stats['H']->set_sql("SELECT HP FROM entitystats WHERE Entity_ID = "-1";");
+	stats['H']->set_sql("SELECT HP FROM entitystats WHERE Entity_ID = "ref";");
 	stats['H']->prepare();
 
 	stats['A'] = db.getstatement();
-	stats['A']->set_sql("SELECT Attack FROM entitystats WHERE Entity_ID = "-1";");
+	stats['A']->set_sql("SELECT Attack FROM entitystats WHERE Entity_ID = "ref";");
 	stats['A']->prepare();
 
 	stats['D'] = db.getstatement();
-	stats['D']->set_sql("SELECT Defence FROM entitystats WHERE Entity_ID = "-1";");
+	stats['D']->set_sql("SELECT Defence FROM entitystats WHERE Entity_ID = "ref";");
 	stats['D']->prepare();
 
 	stats['G'] = 20; //Gold
