@@ -23,11 +23,11 @@ int main()
 			// rest of code here
 			break;
 		case 2:
-			cout << "Story so far....\n";
+			cout << "Defeat all five enemies and the Boss to complete the game\n";
 			// rest of code here
 			break;
 		case 3:
-			cout << "Ahahah, you really think I will help you?\n";
+			cout << "Go up, down and sideways to encounter the enemies\n";
 			// rest of code here
 			break;
 		case 4:
