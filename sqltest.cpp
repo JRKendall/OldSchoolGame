@@ -24,12 +24,14 @@ map<char, int> playerStatList;
 map<vector<int>, int> goldList;
 vector<vector<int>> world;
 
-sqlite::sqlite db( "entitiesdb.db" ); //opening up relational database
+
 
 
 map<char, int> setStats(int ref){
 	//Lookup stats in stat lists, for now defaults used
 	map<char, int> stats;
+	
+	sqlite::sqlite db( "entitiesdb.db" ); //opening up relational database
 	
 	stats['H'] = db.getstatement();
 	stats['H']->set_sql("SELECT HP FROM entitystats WHERE Entity_ID = "ref";");
